@@ -1,7 +1,7 @@
 import TextRecognition from '@react-native-ml-kit/text-recognition';
 import { Camera, CameraType, ImageType } from 'expo-camera';
 import { StatusBar } from 'expo-status-bar';
-import { useMemo, useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 import {
 	Button,
 	ScrollView,
@@ -46,7 +46,8 @@ const App = () => {
 		setScannedText('');
 	};
 
-	const ScannedTextSection = useMemo(() => {
+	const ScannedTextSection = memo(() => {
+		console.log('rendered scanned text');
 		return (
 			<ScrollView
 				showsVerticalScrollIndicator={true}
@@ -57,9 +58,10 @@ const App = () => {
 				</Text>
 			</ScrollView>
 		);
-	}, [scannedText]);
+	});
 
-	const ButtonSection = useMemo(() => {
+	const ButtonSection = memo(() => {
+		console.log('rendered button section');
 		return (
 			<View style={styles.buttonContainer}>
 				<TouchableOpacity style={styles.button} onPress={toggleCameraType}>
@@ -73,7 +75,7 @@ const App = () => {
 				</TouchableOpacity>
 			</View>
 		);
-	}, []);
+	});
 
 	if (!permission) {
 		// Camera permissions are still loading
@@ -96,8 +98,8 @@ const App = () => {
 		<View style={styles.container}>
 			<StatusBar />
 			<Camera style={styles.camera} type={type} ref={cameraRef}>
-				{ScannedTextSection}
-				{ButtonSection}
+				<ScannedTextSection />
+				<ButtonSection />
 			</Camera>
 		</View>
 	);
